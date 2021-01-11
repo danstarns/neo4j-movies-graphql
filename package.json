@@ -1,0 +1,35 @@
+{
+  "name": "neo4j-movies-graphql",
+  "version": "1.0.0",
+  "description": "Simple movies application built in a Typescript monorepo using @neo4j/graphql and React.js.",
+  "main": "index.js",
+  "scripts": {
+    "lerna:bootstrap": "lerna bootstrap",
+    "prepare": "run-s lerna:clean lerna:bootstrap",
+    "lerna:clean": "lerna clean -y",
+    "client:dev": "cd ./packages/client && npm run dev",
+    "server:dev": "cd ./packages/server && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danstarns/neo4j-movies-graphql.git"
+  },
+  "keywords": [],
+  "author": "danielstarns@hotmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danstarns/neo4j-movies-graphql/issues"
+  },
+  "homepage": "https://github.com/danstarns/neo4j-movies-graphql#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "lerna": "^3.22.1",
+    "prettier": "^2.2.1",
+    "npm-run-all": "4.1.5"
+  }
+}
