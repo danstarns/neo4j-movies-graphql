@@ -66,29 +66,7 @@ Visit http://localhost:4000 and start browsing movies.
 
 ### Movies
 
-[![Movies](https://i.gyazo.com/ccdffeb5803d00a544f06a030240f7a8.gif)](https://gyazo.com/ccdffeb5803d00a544f06a030240f7a8)
-
-```graphql
-query Movies($titleRegex: String) {
-    Movies(
-        where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
-        options: {
-            limit: $limit
-            skip: $skip
-            sort: [poster_ASC, imdbRating_DESC]
-        }
-    ) {
-        movieId
-        title
-        poster
-        imdbRating
-    }
-}
-```
-
-### Pagination
-
-[![Pagination](https://i.gyazo.com/12bedcfc9babb172a5e0d08e90250ed3.gif)](https://gyazo.com/12bedcfc9babb172a5e0d08e90250ed3)
+![Movies](./assets/movies.gif)
 
 ```graphql
 query Movies($titleRegex: String, $limit: Int, $skip: Int, $hasNextSkip: Int) {
@@ -118,11 +96,9 @@ query Movies($titleRegex: String, $limit: Int, $skip: Int, $hasNextSkip: Int) {
 }
 ```
 
-**Asking for the next movie**
-
 ### Movie
 
-[![Movie](https://i.gyazo.com/2ec14a28e5b59c946e02df2c57f9ea5e.gif)](https://gyazo.com/2ec14a28e5b59c946e02df2c57f9ea5e)
+![Movie](./assets/movie.gif)
 
 ```graphql
 query Movie($movieId: ID) {
@@ -138,24 +114,9 @@ query Movie($movieId: ID) {
             poster
             imdbRating
         }
+        genres {
+            name
+        }
     }
-}
-```
-
-#### Similar
-
-```graphql
-type Movie {
-    similar(skip: Int!, limit: Int!): [Movie]
-        @cypher(
-            statement: """
-            MATCH (this)-[:IN_GENRE]->(:Genre)<-[:IN_GENRE]-(m:Movie)
-            WITH m
-            ORDER BY m.poster ASC, m.imdbRating DESC
-            RETURN m
-            SKIP $skip
-            LIMIT $limit
-            """
-        )
 }
 ```

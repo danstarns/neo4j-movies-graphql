@@ -8,6 +8,7 @@ import {
     Col,
     Spinner,
     Modal,
+    Badge,
 } from "react-bootstrap";
 import * as ApolloClient from "./ApolloClient";
 import {
@@ -21,6 +22,9 @@ import {
 import { MOVIES, MOVIE } from "./queries";
 import { DebounceInput } from "react-debounce-input";
 
+interface Genre {
+    name: string;
+}
 interface Movie {
     movieId: string;
     title: string;
@@ -28,6 +32,7 @@ interface Movie {
     plot: string;
     imdbRating: number;
     similar: Movie[];
+    genres: Genre[];
 }
 
 function MovieModal({
@@ -104,6 +109,17 @@ function MovieModal({
                             <h2>{movie.title}</h2>
                             <p>{movie.plot}</p>
                             <p>Rating: {movie.imdbRating}</p>
+                            <div className="d-flex flex-wrap">
+                                {movie.genres.map((genre) => (
+                                    <Badge
+                                        className="m-1"
+                                        key={genre.name}
+                                        variant="info"
+                                    >
+                                        {genre.name}
+                                    </Badge>
+                                ))}
+                            </div>
                         </div>
                     </Col>
                     <div className="p-3">
@@ -229,6 +245,10 @@ function Home() {
 
         getMovies();
     }, [search, selected, skip, limit]);
+
+    useEffect(() => {
+        setSkip(0);
+    }, [search]);
 
     if (error) {
         return <Alert>{error}</Alert>;

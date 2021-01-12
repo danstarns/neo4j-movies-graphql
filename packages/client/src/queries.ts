@@ -47,6 +47,9 @@ export const MOVIE = gql`
                 poster
                 imdbRating
             }
+            genres {
+                name
+            }
         }
     }
 `;
