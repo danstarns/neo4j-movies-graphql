@@ -7,10 +7,22 @@ import gql from "graphql-tag";
 const typeDefs = gql`
     type Movie {
         movieId: ID!
-        budget: Int!
-        countries: [String]!
-        imdbRating: Float!
+        title: String
+        poster: String
+        plot: String
+        imdbRating: Float
         genres: [Genre] @relationship(type: "IN_GENRE", direction: "OUT")
+        similar(skip: Int!, limit: Int!): [Movie]
+            @cypher(
+                statement: """
+                MATCH (this)-[:IN_GENRE]->(:Genre)<-[:IN_GENRE]-(m:Movie)
+                WITH m
+                ORDER BY m.poster ASC, m.imdbRating DESC
+                RETURN m
+                SKIP $skip
+                LIMIT $limit
+                """
+            )
     }
 
     type Genre {
