@@ -5,7 +5,7 @@ export const MOVIES = gql`
         $titleRegex: String
         $limit: Int
         $skip: Int
-        $skipPlusOne: Int
+        $hasNextSkip: Int
     ) {
         Movies(
             where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
@@ -24,7 +24,7 @@ export const MOVIES = gql`
             where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
             options: {
                 limit: 1
-                skip: $skipPlusOne
+                skip: $hasNextSkip
                 sort: [poster_ASC, imdbRating_DESC]
             }
         ) {

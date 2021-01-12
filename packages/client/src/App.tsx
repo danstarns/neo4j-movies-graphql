@@ -194,7 +194,7 @@ function Home() {
                     ...(search ? { titleRegex: `(?i).*${search}.*` } : {}),
                     skip,
                     limit,
-                    skipPlusOne: skip + 1,
+                    hasNextSkip: skip + 1,
                 },
             });
 
@@ -294,7 +294,7 @@ function Home() {
                         {skip > 1 && (
                             <Button
                                 variant="secondary"
-                                onClick={() => setSkip((s) => s - 1)}
+                                onClick={() => setSkip((s) => s - limit)}
                             >
                                 Back
                             </Button>
