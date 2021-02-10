@@ -7,26 +7,26 @@ export const MOVIES = gql`
         $skip: Int
         $hasNextSkip: Int
     ) {
-        Movies(
-            where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
-            options: {
-                limit: $limit
-                skip: $skip
-                sort: [poster_ASC, imdbRating_DESC]
+        movies(
+            where: {
+                title_REGEX: $titleRegex
+                poster_NOT: null
+                imdbRating_NOT: null
             }
+            options: { limit: $limit, skip: $skip, sort: [imdbRating_DESC] }
         ) {
             movieId
             title
             poster
             imdbRating
         }
-        hasNextMovies: Movies(
-            where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
-            options: {
-                limit: 1
-                skip: $hasNextSkip
-                sort: [poster_ASC, imdbRating_DESC]
+        hasNextMovies: movies(
+            where: {
+                title_REGEX: $titleRegex
+                poster_NOT: null
+                imdbRating_NOT: null
             }
+            options: { limit: 1, skip: $hasNextSkip, sort: [imdbRating_DESC] }
         ) {
             movieId
         }
@@ -35,7 +35,7 @@ export const MOVIES = gql`
 
 export const MOVIE = gql`
     query Movie($movieId: ID) {
-        Movies(where: { movieId: $movieId }) {
+        movies(where: { movieId: $movieId }) {
             movieId
             title
             plot

@@ -61,7 +61,7 @@ function MovieModal({
                     },
                 });
 
-                setMovie(data.Movies[0]);
+                setMovie(data.movies[0]);
             } catch (e) {
                 setError(e.message);
             }
@@ -125,31 +125,33 @@ function MovieModal({
                     <div className="p-3">
                         <h2>Similar</h2>
                         <Row>
-                            {movie.similar.map((m) => (
-                                <Col sm={6} className="mt-2">
-                                    <Card>
-                                        <Card.Body className="d-flex">
-                                            <img
-                                                src={m.poster}
-                                                className="w-50 mx-auto"
-                                            ></img>
-                                        </Card.Body>
-                                        <Card.Footer>
-                                            <Link
-                                                to={`/?movieId=${m.movieId}`}
-                                                onClick={() => {
-                                                    setSelected(m.movieId);
-                                                    setSelectedMovieId(
-                                                        m.movieId
-                                                    );
-                                                }}
-                                            >
-                                                {m.title}
-                                            </Link>
-                                        </Card.Footer>
-                                    </Card>
-                                </Col>
-                            ))}
+                            {movie.similar
+                                .filter((x) => x.poster)
+                                .map((m) => (
+                                    <Col sm={6} className="mt-2">
+                                        <Card>
+                                            <Card.Body className="d-flex">
+                                                <img
+                                                    src={m.poster}
+                                                    className="w-50 mx-auto"
+                                                ></img>
+                                            </Card.Body>
+                                            <Card.Footer>
+                                                <Link
+                                                    to={`/?movieId=${m.movieId}`}
+                                                    onClick={() => {
+                                                        setSelected(m.movieId);
+                                                        setSelectedMovieId(
+                                                            m.movieId
+                                                        );
+                                                    }}
+                                                >
+                                                    {m.title}
+                                                </Link>
+                                            </Card.Footer>
+                                        </Card>
+                                    </Col>
+                                ))}
                         </Row>
                     </div>
                 </Row>
@@ -214,7 +216,7 @@ function Home() {
                 },
             });
 
-            setMovies(data.Movies);
+            setMovies(data.movies.filter((m: Movie) => Boolean(m.poster)));
             setHasNextMovies(Boolean(data.hasNextMovies.length));
         } catch (e) {
             setError(e.message);

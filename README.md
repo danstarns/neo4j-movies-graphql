@@ -57,8 +57,9 @@ Each package contains a `./env.example` file. Copy this example to, the same fol
 
 From the root of the monorepo run;
 
-1. `$ npm run client:dev`
-2. `$ npm run server:dev`
+1. `$ npm ci`
+2. `$ npm run client:dev`
+3. `$ npm run server:dev`
 
 Visit http://localhost:4000 and start browsing movies.
 
@@ -70,26 +71,26 @@ Visit http://localhost:4000 and start browsing movies.
 
 ```graphql
 query Movies($titleRegex: String, $limit: Int, $skip: Int, $hasNextSkip: Int) {
-    Movies(
-        where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
-        options: {
-            limit: $limit
-            skip: $skip
-            sort: [poster_ASC, imdbRating_DESC]
+    movies(
+        where: {
+            title_REGEX: $titleRegex
+            poster_NOT: null
+            imdbRating_NOT: null
         }
+        options: { limit: $limit, skip: $skip, sort: [imdbRating_DESC] }
     ) {
         movieId
         title
         poster
         imdbRating
     }
-    hasNextMovies: Movies(
-        where: { title_REGEX: $titleRegex, imdbRating_GTE: 1 }
-        options: {
-            limit: 1
-            skip: $hasNextSkip
-            sort: [poster_ASC, imdbRating_DESC]
+    hasNextMovies: movies(
+        where: {
+            title_REGEX: $titleRegex
+            poster_NOT: null
+            imdbRating_NOT: null
         }
+        options: { limit: 1, skip: $hasNextSkip, sort: [imdbRating_DESC] }
     ) {
         movieId
     }
@@ -102,7 +103,7 @@ query Movies($titleRegex: String, $limit: Int, $skip: Int, $hasNextSkip: Int) {
 
 ```graphql
 query Movie($movieId: ID) {
-    Movies(where: { movieId: $movieId }) {
+    movies(where: { movieId: $movieId }) {
         movieId
         title
         plot
